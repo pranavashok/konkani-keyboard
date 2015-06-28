@@ -1,20 +1,37 @@
+var shift = 0;
 window.onload = function() {
-	var shift = 0;
     var spans = document.getElementsByTagName('span');
     for(var i = 0; i < spans.length; i++) {
         var span = spans[i];
+        
         if(('KeyboardKey').match(span.className)) {
             span.onclick = function() {
-	            append(this.innerHTML);
+            	if(shift == 1) {
+			    	shiftrelease();
+			    	shift = 0;
+			    }
+            	var ctl = document.getElementById('typearea');
+    			var startPos = ctl.selectionStart;
+    			var endPos = ctl.selectionEnd;
+            	if(startPos != endPos)
+	            	ctl.value = ctl.value.slice(0, startPos) + this.innerHTML + ctl.value.slice(endPos, ctl.value.length)
+	            else
+	            	ctl.value = ctl.value.slice(0, startPos) + this.innerHTML + ctl.value.slice(startPos, ctl.value.length)
+	            ctl.setSelectionRange(startPos+1, startPos+1);
+	            ctl.focus();
             }
         }
         else if(('KeyboardKey clear').match(span.className)) {
             span.onclick = function() {
 	            document.getElementById('typearea').value = "";
+	            ctl.focus();
             }
         }
         else if(('KeyboardKey shiftkey').match(span.className)) {
             span.onclick = function() {
+            	var ctl = document.getElementById('typearea');
+    			var startPos = ctl.selectionStart;
+    			var endPos = ctl.selectionEnd;
             	if(shift == 0) {
 			    	shiftpress();
 			    	shift = 1;
@@ -23,23 +40,79 @@ window.onload = function() {
 			     	shiftrelease();
 			     	shift = 0;
 			    }
+			    ctl.setSelectionRange(startPos, endPos);
+	            ctl.focus();
 	        }
+	    }
+	    else if(('KeyboardKey del').match(span.className)) {
+	    	span.onclick = function() {
+	    		var ctl = document.getElementById('typearea');
+    			var startPos = ctl.selectionStart;
+    			var endPos = ctl.selectionEnd;
+    			if(startPos != endPos)
+    				ctl.value = ctl.value.slice(0, startPos) + ctl.value.slice(endPos, ctl.value.length);
+    			else
+    				ctl.value = ctl.value.slice(0, startPos) + ctl.value.slice(startPos+1, ctl.value.length);
+	            ctl.setSelectionRange(startPos, startPos);
+	            ctl.focus();
+	    	}
+	    }
+	    else if(('KeyboardKey bksp').match(span.className)) {
+	    	span.onclick = function() {
+	    		var ctl = document.getElementById('typearea');
+    			var startPos = ctl.selectionStart;
+    			var endPos = ctl.selectionEnd;
+    			if(startPos != endPos) {
+    				ctl.value = ctl.value.slice(0, startPos) + ctl.value.slice(endPos, ctl.value.length);
+    				ctl.setSelectionRange(startPos, startPos);
+    			}
+    			else {
+    				ctl.value = ctl.value.slice(0, startPos-1) + ctl.value.slice(startPos, ctl.value.length);
+    				ctl.setSelectionRange(startPos-1, startPos-1);
+    			}
+    			ctl.focus();	            
+	    	}
+	    }
+	    else if(('KeyboardKey tab').match(span.className)) {
+	    	span.onclick = function() {
+	    		var ctl = document.getElementById('typearea');
+    			var startPos = ctl.selectionStart;
+    			var endPos = ctl.selectionEnd;
+    			if(startPos != endPos)
+    				ctl.value = ctl.value.slice(0, startPos) + '\u0009' + ctl.value.slice(endPos, ctl.value.length);
+    			else
+    				ctl.value = ctl.value.slice(0, startPos) + '\u0009' + ctl.value.slice(startPos, ctl.value.length);
+    			ctl.setSelectionRange(startPos+1, startPos+1);
+    			ctl.focus();
+	    	}
+	    }
+	    else if(('KeyboardKey enter').match(span.className)) {
+	    	span.onclick = function() {
+	    		var ctl = document.getElementById('typearea');
+    			var startPos = ctl.selectionStart;
+    			var endPos = ctl.selectionEnd;
+    			if(startPos != endPos)
+    				ctl.value = ctl.value.slice(0, startPos) + '\u000A' + ctl.value.slice(endPos, ctl.value.length);
+    			else
+    				ctl.value = ctl.value.slice(0, startPos) + '\u000A' + ctl.value.slice(startPos, ctl.value.length);
+    			ctl.setSelectionRange(startPos+1, startPos+1);
+    			ctl.focus();
+	    	}
 	    }
     }
     document.onkeydown = (function (ev) {
-		  var key;
-		  var isShift;
-		  if (window.event) {
-		    key = window.event.keyCode;
-		    alert(key);
+		var key;
+		var isShift;
+		if (window.event) {
+			key = window.event.keyCode;
 		    isShift = !!window.event.shiftKey; // typecast to boolean
-		  } else {
+		} else {
 		    key = ev.which;
 		    isShift = !!ev.shiftKey;
-		  }
-		  if ( isShift ) {
+		}
+		if ( isShift ) {
 		    switch (key) {
-		      case 16:
+		        case 16:
 		      	if(shift == 0) {
 		      		shiftpress();
 		      		shift = 1;
@@ -49,12 +122,12 @@ window.onload = function() {
 		      		shift = 0;
 		      	}
 		        break;
-		      default:
-		        //alert(key);
-		        break;
-		    }
-		  }
-		});
+		    	default:
+		    	shift = 0;
+		    	break;
+			}
+		}
+	});
 }
 
 function shiftpress() {
@@ -79,6 +152,9 @@ function shiftrelease() {
     }
 }
 
-function append(ch){
-    document.getElementById('typearea').value = document.getElementById('typearea').value+ch;
+function textbox()
+{
+    var ctl = document.getElementById('typearea');
+    var startPos = ctl.selectionStart;
+    var endPos = ctl.selectionEnd;
 }
