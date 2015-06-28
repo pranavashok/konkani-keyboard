@@ -1,0 +1,45 @@
+body {
+	font-family: arial, Helvetica, sans-serif;
+}
+.Keyboard {
+	padding:30px;
+}
+.KeyboardRow {
+	text-align: center;
+}
+.KeyboardKey {
+	display: inline-block;
+	border: 1px solid #dcdcdc;
+	margin-bottom: 5px;
+	border-radius: 6px;
+	cursor: pointer;
+	display: inline-block;
+	color: #777777;
+	font-size: 16px;
+	font-style: normal;
+	height: 40px;
+	line-height: 40px;
+	width: 50px;
+	text-decoration: none;
+	text-align: center;
+	text-shadow: 1px 1px 0px #ffffff;
+}
+.KeyboardKey:hover {
+	background-color: #dfdfdf;
+}
+.KeyboardKey:active {
+	position: relative;
+	top: 1px;
+}
+.typearea {
+	height:300px;
+	width:500px;
+	display: block;
+	margin-top: 50px;
+}
+.center {
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	width:100%;
+}
