@@ -17,14 +17,22 @@ window.onload = function() {
 	            	ctl.value = ctl.value.slice(0, startPos) + this.innerHTML + ctl.value.slice(endPos, ctl.value.length)
 	            else
 	            	ctl.value = ctl.value.slice(0, startPos) + this.innerHTML + ctl.value.slice(startPos, ctl.value.length)
-	            ctl.setSelectionRange(startPos+1, startPos+1);
+                var len = (encodeURIComponent(this.innerHTML).match(/E0/g)||[]).length;
+	            ctl.setSelectionRange(startPos+len, startPos+len);
 	            ctl.focus();
             }
         }
-        else if(('KeyboardKey clear').match(span.className)) {
+        else if(('KeyboardKey space').match(span.className)) {
             span.onclick = function() {
-	            document.getElementById('typearea').value = "";
-	            ctl.focus();
+                var ctl = document.getElementById('typearea');
+                var startPos = ctl.selectionStart;
+                var endPos = ctl.selectionEnd;
+                if(startPos != endPos)
+                    ctl.value = ctl.value.slice(0, startPos) + '\u0020' + ctl.value.slice(endPos, ctl.value.length);
+                else
+                    ctl.value = ctl.value.slice(0, startPos) + '\u0020' + ctl.value.slice(startPos, ctl.value.length);
+                ctl.setSelectionRange(startPos+1, startPos+1);
+                ctl.focus();
             }
         }
         else if(('KeyboardKey shiftkey').match(span.className)) {
