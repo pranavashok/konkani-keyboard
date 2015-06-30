@@ -1,5 +1,27 @@
-body {
+.body {
 	font-family: arial, Helvetica, sans-serif;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	padding:0;
+	margin:0;
+}
+footer {
+	background: #404040;
+	color:#999;
+	padding:10px;
+	font-size: 13px;
+}
+footer a {
+	color: #bbb;
+	text-decoration: none;
+}
+footer a:hover {
+	color: #ddd;
+	text-decoration: underline;
+}
+.content {
+	flex: 1;
 }
 .Keyboard {
 	padding:30px;
